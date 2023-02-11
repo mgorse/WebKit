@@ -1161,11 +1161,6 @@ Frame* Frame::contentFrameFromWindowOrFrameElement(JSContextRef context, JSValue
     return dynamicDowncast<LocalFrame>(downcast<HTMLFrameOwnerElement>(jsNode->wrapped()).contentFrame());
 }
 
-AbstractFrame& Frame::abstractMainFrame() const
-{
-    return m_mainFrame;
-}
-
 #if ENABLE(DATA_DETECTION)
 
 DataDetectionResultsStorage& Frame::dataDetectionResults()

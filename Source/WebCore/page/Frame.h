@@ -381,6 +381,11 @@ inline Frame& Frame::mainFrame() const
     return m_mainFrame;
 }
 
+inline AbstractFrame& Frame::abstractMainFrame() const
+{
+    return m_mainFrame;
+}
+
 WTF::TextStream& operator<<(WTF::TextStream&, const Frame&);
 
 } // namespace WebCore
