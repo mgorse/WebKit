@@ -532,7 +532,7 @@ bool Editor::canCopy() const
 
 bool Editor::canPaste() const
 {
-    if (m_document.frame()->mainFrame().loader().shouldSuppressTextInputFromEditing())
+    if (dynamicDowncast<LocalFrame>(m_document.frame()->abstractMainFrame())->loader().shouldSuppressTextInputFromEditing())
         return false;
 
     return canEdit();
@@ -796,7 +796,7 @@ bool Editor::tryDHTMLCut()
 
 bool Editor::shouldInsertText(const String& text, const std::optional<SimpleRange>& range, EditorInsertAction action) const
 {
-    if (m_document.frame()->mainFrame().loader().shouldSuppressTextInputFromEditing() && action == EditorInsertAction::Typed)
+    if (dynamicDowncast<LocalFrame>(m_document.frame()->abstractMainFrame())->loader().shouldSuppressTextInputFromEditing() && action == EditorInsertAction::Typed)
         return false;
 
     return client() && client()->shouldInsertText(text, range, action);

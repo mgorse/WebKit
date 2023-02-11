@@ -1261,7 +1261,7 @@ int DOMWindow::outerHeight() const
         return innerHeight();
 
 #if PLATFORM(IOS_FAMILY)
-    RefPtr view = frame->isMainFrame() ? frame->view() : frame->mainFrame().view();
+    RefPtr view = frame->isMainFrame() ? frame->view() : dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->view();
     if (!view)
         return 0;
 
@@ -1285,7 +1285,7 @@ int DOMWindow::outerWidth() const
         return innerWidth();
 
 #if PLATFORM(IOS_FAMILY)
-    RefPtr view = frame->isMainFrame() ? frame->view() : frame->mainFrame().view();
+    RefPtr view = frame->isMainFrame() ? frame->view() : dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->view();
     if (!view)
         return 0;
 
@@ -1988,7 +1988,7 @@ bool DOMWindow::isSameSecurityOriginAsMainFrame() const
     if (frame->isMainFrame())
         return true;
 
-    Document* mainFrameDocument = frame->mainFrame().document();
+    Document* mainFrameDocument = dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->document();
 
     if (mainFrameDocument && document()->securityOrigin().isSameOriginDomain(mainFrameDocument->securityOrigin()))
         return true;
@@ -2648,7 +2648,7 @@ ExceptionOr<RefPtr<WindowProxy>> DOMWindow::open(DOMWindow& activeWindow, DOMWin
 #if ENABLE(CONTENT_EXTENSIONS)
     auto* page = firstFrame->page();
     RefPtr firstFrameDocument = firstFrame->document();
-    RefPtr mainFrameDocument = firstFrame->mainFrame().document();
+    RefPtr mainFrameDocument = dynamicDowncast<LocalFrame>(firstFrame->abstractMainFrame())->document();
     RefPtr mainFrameDocumentLoader = mainFrameDocument ? mainFrameDocument->loader() : nullptr;
     if (firstFrameDocument && page && mainFrameDocumentLoader) {
         auto results = page->userContentProvider().processContentRuleListsForLoad(*page, firstFrameDocument->completeURL(urlString), ContentExtensions::ResourceType::Popup, *mainFrameDocumentLoader);

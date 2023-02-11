@@ -1969,6 +1969,7 @@ ExceptionOr<void> Internals::scrollBySimulatingWheelEvent(Element& element, doub
     ScrollableArea* scrollableArea;
 
     if (&element == document->scrollingElementForAPI()) {
+        //TODO: Chirag - fixme
         FrameView* frameView = box.frame().mainFrame().view();
         if (!frameView || !frameView->isScrollable())
             return Exception { InvalidAccessError };

@@ -36,7 +36,7 @@ public:
         : m_frame(frame)
     {
         if (frame)
-            ++frame->mainFrame().m_navigationDisableCount;
+            ++dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->m_navigationDisableCount;
         else // Disable all navigations when destructing a frame-less document.
             ++s_globalNavigationDisableCount;
     }
@@ -44,7 +44,7 @@ public:
     ~NavigationDisabler()
     {
         if (m_frame) {
-            auto& mainFrame = m_frame->mainFrame();
+            auto& mainFrame = *dynamicDowncast<LocalFrame>(m_frame->abstractMainFrame());
             ASSERT(mainFrame.m_navigationDisableCount);
             --mainFrame.m_navigationDisableCount;
         } else {
@@ -55,7 +55,7 @@ public:
 
     static bool isNavigationAllowed(Frame& frame)
     {
-        return !frame.mainFrame().m_navigationDisableCount && !s_globalNavigationDisableCount;
+        return !dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->m_navigationDisableCount && !s_globalNavigationDisableCount;
     }
 
 private:

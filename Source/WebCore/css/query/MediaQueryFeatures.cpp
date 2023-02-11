@@ -248,7 +248,7 @@ const FeatureSchema& color()
     static MainThreadNeverDestroyed<IntegerSchema> schema {
         "color"_s,
         [](auto& context) {
-            return screenDepthPerComponent(context.document.frame()->mainFrame().view());
+            return screenDepthPerComponent(dynamicDowncast<LocalFrame>(context.document.frame()->abstractMainFrame())->view());
         }
     };
     return schema;
@@ -264,7 +264,7 @@ const FeatureSchema& colorGamut()
 
             // FIXME: At some point we should start detecting displays that support more colors.
             MatchingIdentifiers identifiers { CSSValueSRGB };
-            if (screenSupportsExtendedColor(frame.mainFrame().view()))
+            if (screenSupportsExtendedColor(dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->view()))
                 identifiers.append(CSSValueP3);
             return identifiers;
         }
@@ -286,7 +286,7 @@ const FeatureSchema& deviceAspectRatio()
     static MainThreadNeverDestroyed<RatioSchema> schema {
         "device-aspect-ratio"_s,
         [](auto& context) {
-            auto screenSize = context.document.frame()->mainFrame().screenSize();
+            auto screenSize = dynamicDowncast<LocalFrame>(context.document.frame()->abstractMainFrame())->screenSize();
             return FloatSize { screenSize.width(), screenSize.height() };
         }
     };
@@ -298,7 +298,7 @@ const FeatureSchema& deviceHeight()
     static MainThreadNeverDestroyed<LengthSchema> schema {
         "device-height"_s,
         [](auto& context) {
-            return LayoutUnit { context.document.frame()->mainFrame().screenSize().height() };
+            return LayoutUnit { dynamicDowncast<LocalFrame>(context.document.frame()->abstractMainFrame())->screenSize().height() };
         }
     };
     return schema;
@@ -320,7 +320,7 @@ const FeatureSchema& deviceWidth()
     static MainThreadNeverDestroyed<LengthSchema> schema {
         "device-width"_s,
         [](auto& context) {
-            return LayoutUnit { context.document.frame()->mainFrame().screenSize().width() };
+            return LayoutUnit { dynamicDowncast<LocalFrame>(context.document.frame()->abstractMainFrame())->screenSize().width() };
         }
     };
     return schema;
@@ -338,7 +338,7 @@ const FeatureSchema& dynamicRange()
                     return true;
                 if (frame.settings().forcedSupportsHighDynamicRangeValue() == ForcedAccessibilityValue::Off)
                     return false;
-                return screenSupportsHighDynamicRange(frame.mainFrame().view());
+                return screenSupportsHighDynamicRange(dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->view());
             }();
 
             MatchingIdentifiers identifiers { CSSValueStandard };
@@ -431,10 +431,10 @@ const FeatureSchema& monochrome()
                     return true;
                 if (frame.settings().forcedDisplayIsMonochromeAccessibilityValue() == ForcedAccessibilityValue::Off)
                     return false;
-                return screenIsMonochrome(frame.mainFrame().view());
+                return screenIsMonochrome(dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->view());
             }();
 
-            return isMonochrome ? screenDepthPerComponent(context.document.frame()->mainFrame().view()) : 0;
+            return isMonochrome ? screenDepthPerComponent(dynamicDowncast<LocalFrame>(context.document.frame()->abstractMainFrame())->view()) : 0;
         }
     };
     return schema;

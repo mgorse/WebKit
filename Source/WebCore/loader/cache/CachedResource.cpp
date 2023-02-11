@@ -184,7 +184,13 @@ void CachedResource::load(CachedResourceLoader& cachedResourceLoader)
     // We query the top document because new frames may be created in pagehide event handlers
     // and their backForwardCacheState will not reflect the fact that they are about to enter page
     // cache.
-    if (auto* topDocument = frame.mainFrame().document()) {
+    if (!dynamicDowncast<LocalFrame>(frame.abstractMainFrame())) {
+        //FIXME: Fix with website isolation work
+        failBeforeStarting();
+        return;
+    }
+
+    if (auto* topDocument = dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->document()) {
         switch (topDocument->backForwardCacheState()) {
         case Document::NotInBackForwardCache:
             break;

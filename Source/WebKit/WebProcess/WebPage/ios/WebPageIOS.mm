@@ -1501,7 +1501,7 @@ static std::pair<std::optional<SimpleRange>, SelectionWasFlipped> rangeForPointI
     VisiblePosition selectionStart = existingSelection.visibleStart();
     VisiblePosition selectionEnd = existingSelection.visibleEnd();
 
-    auto pointInDocument = frame.view()->rootViewToContents(pointInRootViewCoordinates.constrainedWithin(frame.mainFrame().view()->unobscuredContentRect()));
+    auto pointInDocument = frame.view()->rootViewToContents(pointInRootViewCoordinates.constrainedWithin(dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->view()->unobscuredContentRect()));
 
     if (!selectionFlippingEnabled) {
         auto node = selectionStart.deepEquivalent().containerNode();

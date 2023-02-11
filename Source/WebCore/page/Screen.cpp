@@ -56,7 +56,11 @@ Screen::~Screen() = default;
 
 static bool isLoadingInHeadlessMode(const Frame& frame)
 {
-    RefPtr mainDocument = frame.mainFrame().document();
+    auto *localFrame = dynamicDowncast<LocalFrame>(frame.abstractMainFrame());
+    if (!localFrame)
+        return false;
+
+    RefPtr mainDocument = localFrame->document();
     if (!mainDocument)
         return false;
 

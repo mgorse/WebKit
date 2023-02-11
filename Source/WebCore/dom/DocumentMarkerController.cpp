@@ -143,7 +143,7 @@ static void updateMainFrameLayoutIfNeeded(Document& document)
     if (!frame)
         return;
 
-    FrameView* mainFrameView = frame->mainFrame().view();
+    FrameView* mainFrameView = dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->view();
     if (!mainFrameView)
         return;
 

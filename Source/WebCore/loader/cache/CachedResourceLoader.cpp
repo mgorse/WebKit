@@ -1053,7 +1053,7 @@ ResourceErrorOr<CachedResourceHandle<CachedResource>> CachedResourceLoader::requ
         if (type == CachedResource::Type::MainResource) {
             if (frame.isMainFrame())
                 sameOriginRequest = true;
-            else if (auto* topDocument = frame.mainFrame().document())
+            else if (auto* topDocument = dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->document())
                 sameOriginRequest = topDocument->securityOrigin().isSameSchemeHostPort(requestedOrigin.get());
         } else if (document()) {
             sameOriginRequest = document()->topOrigin().isSameSchemeHostPort(requestedOrigin.get())

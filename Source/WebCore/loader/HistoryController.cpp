@@ -495,7 +495,7 @@ void FrameLoader::HistoryController::updateForCommit()
         // Tell all other frames in the tree to commit their provisional items and
         // restore their scroll position.  We'll avoid this frame (which has already
         // committed) and its children (which will be replaced).
-        m_frame.mainFrame().loader().history().recursiveUpdateForCommit();
+        dynamicDowncast<LocalFrame>(m_frame.abstractMainFrame())->loader().history().recursiveUpdateForCommit();
     }
 }
 
@@ -563,7 +563,7 @@ void FrameLoader::HistoryController::updateForSameDocumentNavigation()
     if (!usesEphemeralSession)
         addVisitedLink(*page, m_frame.document()->url());
 
-    m_frame.mainFrame().loader().history().recursiveUpdateForSameDocumentNavigation();
+    dynamicDowncast<LocalFrame>(m_frame.abstractMainFrame())->loader().history().recursiveUpdateForSameDocumentNavigation();
 
     if (m_currentItem) {
         m_currentItem->setURL(m_frame.document()->url());
@@ -835,7 +835,7 @@ void FrameLoader::HistoryController::updateBackForwardListClippedAtTarget(bool d
     if (m_frame.loader().documentLoader()->urlForHistory().isEmpty())
         return;
 
-    FrameLoader& frameLoader = m_frame.mainFrame().loader();
+    FrameLoader& frameLoader = dynamicDowncast<LocalFrame>(m_frame.abstractMainFrame())->loader();
 
     Ref<HistoryItem> topItem = frameLoader.history().createItemTree(m_frame, doClip);
     LOG(History, "HistoryController %p updateBackForwardListClippedAtTarget: Adding backforward item %p in frame %p (main frame %d) %s", this, topItem.ptr(), &m_frame, m_frame.isMainFrame(), m_frame.loader().documentLoader()->url().string().utf8().data());
@@ -879,7 +879,7 @@ void FrameLoader::HistoryController::pushState(RefPtr<SerializedScriptValue>&& s
     bool shouldRestoreScrollPosition = m_currentItem->shouldRestoreScrollPosition();
 
     // Get a HistoryItem tree for the current frame tree.
-    Ref<HistoryItem> topItem = m_frame.mainFrame().loader().history().createItemTree(m_frame, false);
+    Ref<HistoryItem> topItem = dynamicDowncast<LocalFrame>(m_frame.abstractMainFrame())->loader().history().createItemTree(m_frame, false);
 
     auto* document = m_frame.document();
     if (document && !document->hasRecentUserInteractionForNavigationFromJS())
