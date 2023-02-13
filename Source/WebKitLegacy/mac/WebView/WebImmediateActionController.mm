@@ -167,7 +167,7 @@
 
     constexpr OptionSet<HitTestRequest::Type> hitType { HitTestRequest::Type::ReadOnly, HitTestRequest::Type::Active, HitTestRequest::Type::DisallowUserAgentShadowContent, HitTestRequest::Type::AllowChildFrameContent };
     _hitTestResult = coreFrame->eventHandler().hitTestResultAtPoint(WebCore::IntPoint(viewPoint), hitType);
-    coreFrame->mainFrame().eventHandler().setImmediateActionStage(WebCore::ImmediateActionStage::PerformedHitTest);
+    dynamicDowncast<LocalFrame>(coreFrame->abstractMainFrame())->eventHandler().setImmediateActionStage(WebCore::ImmediateActionStage::PerformedHitTest);
 
     if (auto* element = _hitTestResult.targetElement())
         _contentPreventsDefault = element->dispatchMouseForceWillBegin();

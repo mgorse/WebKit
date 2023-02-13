@@ -336,7 +336,7 @@ void ScrollingCoordinator::updateSynchronousScrollingReasons(FrameView& frameVie
 
     auto* localFrame = dynamicDowncast<LocalFrame>(frameView.frame());
     if (localFrame
-        && localFrame->mainFrame().document()
+        && dynamicDowncast<LocalFrame>(localFrame->abstractMainFrame())->document()
         && localFrame->document()->isImageDocument())
         newSynchronousScrollingReasons.add(SynchronousScrollingReason::IsImageDocument);
 

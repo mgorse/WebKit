@@ -305,7 +305,7 @@ bool AcceleratedCompositingContext::flushPendingLayerChanges()
     if (!prepareForRendering())
         return false;
 
-    FrameView* frameView = core(&m_webView)->mainFrame().view();
+    FrameView* frameView = dynamicDowncast<LocalFrame>(core(&m_webView)->abstractMainFrame())->view();
     m_rootLayer->flushCompositingStateForThisLayerOnly();
     m_nonCompositedContentLayer->flushCompositingStateForThisLayerOnly();
     if (!frameView->flushCompositingStateIncludingSubframes())

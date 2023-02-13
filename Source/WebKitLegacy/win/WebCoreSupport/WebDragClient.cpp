@@ -131,7 +131,7 @@ OptionSet<DragSourceAction> WebDragClient::dragSourceActionMaskForPoint(const In
 {
     COMPtr<IWebUIDelegate> delegateRef = 0;
     WebDragSourceAction actionMask = WebDragSourceActionAny;
-    POINT localpt = core(m_webView)->mainFrame().view()->windowToContents(windowPoint);
+    POINT localpt = dynamicDowncast<LocalFrame>(core(m_webView)->abstractMainFrame())->view()->windowToContents(windowPoint);
     if (SUCCEEDED(m_webView->uiDelegate(&delegateRef)))
         delegateRef->dragSourceActionMaskForPoint(m_webView, &localpt, &actionMask);
     return coreDragSourceActionMask(actionMask);

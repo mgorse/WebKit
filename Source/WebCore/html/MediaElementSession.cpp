@@ -992,7 +992,7 @@ static bool isElementMainContentForPurposesOfAutoplay(const HTMLMediaElement& el
     if (!document.frame() || !document.frame()->isMainFrame())
         return false;
 
-    auto *localFrame = dynamicDowncast<LocalFrame>(document.frame()->abstractMainFrame());
+    auto* localFrame = dynamicDowncast<LocalFrame>(document.frame()->abstractMainFrame());
     ASSERT(localFrame);
 
     auto& mainFrame = *localFrame;
@@ -1031,7 +1031,7 @@ static bool isElementRectMostlyInMainFrame(const HTMLMediaElement& element)
     if (!documentFrame)
         return false;
 
-    auto *localFrame = dynamicDowncast<LocalFrame>(documentFrame->abstractMainFrame());
+    auto* localFrame = dynamicDowncast<LocalFrame>(documentFrame->abstractMainFrame());
     if (!localFrame)
         return false;
 
@@ -1061,7 +1061,7 @@ static bool isElementLargeRelativeToMainFrame(const HTMLMediaElement& element)
     if (!documentFrame)
         return false;
 
-    auto *localFrame = dynamicDowncast<LocalFrame>(documentFrame->abstractMainFrame());
+    auto* localFrame = dynamicDowncast<LocalFrame>(documentFrame->abstractMainFrame());
     ASSERT(localFrame);
 
     if (!localFrame->view())

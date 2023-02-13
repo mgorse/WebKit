@@ -131,7 +131,7 @@ IntersectionObserver::IntersectionObserver(Document& document, Ref<IntersectionO
         auto& observerData = downcast<Element>(*root).ensureIntersectionObserverData();
         observerData.observers.append(*this);
     } else if (auto* frame = document.frame())
-        m_implicitRootDocument = frame->mainFrame().document();
+        m_implicitRootDocument = dynamicDowncast<LocalFrame>(frame->abstractMainFrame())->document();
 
     std::sort(m_thresholds.begin(), m_thresholds.end());
     

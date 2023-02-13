@@ -107,9 +107,8 @@ WebLoaderStrategy::~WebLoaderStrategy()
 
 void WebLoaderStrategy::loadResource(Frame& frame, CachedResource& resource, ResourceRequest&& request, const ResourceLoaderOptions& options, CompletionHandler<void(RefPtr<SubresourceLoader>&&)>&& completionHandler)
 {
-    //TODO: Chirag - fixme
     if (resource.type() != CachedResource::Type::MainResource || !frame.isMainFrame()) {
-        if (auto* document = frame.mainFrame().document()) {
+        if (auto* document = dynamicDowncast<LocalFrame>(frame.abstractMainFrame())->document()) {
             if (document && document->loader())
                 request.setIsAppInitiated(document->loader()->lastNavigationWasAppInitiated());
         }
@@ -313,7 +312,10 @@ static void addParametersShared(const Frame* frame, NetworkResourceLoadParameter
     // When loading the main frame, we need to get allowPrivacyProxy from the same DocumentLoader that
     // WebFrameLoaderClient::applyToDocumentLoader stored the value on. Otherwise, we need to get the
     // value from the main frame's current DocumentLoader.
-    auto& mainFrame = frame->mainFrame();
+
+    auto localFrame = dynamicDowncast<LocalFrame>(frame->abstractMainFrame());
+    ASSERT(localFrame);
+    auto& mainFrame = *localFrame;
     auto* mainFrameDocumentLoader = mainFrame.loader().policyDocumentLoader();
     if (!mainFrameDocumentLoader)
         mainFrameDocumentLoader = mainFrame.loader().provisionalDocumentLoader();

@@ -5719,7 +5719,9 @@ AXObjectCache* FrameView::axObjectCache() const
     // FIXME: We should generally always be using the main-frame cache rather than
     // using it as a fallback as we do here.
     if (!cache && !m_frame->isMainFrame()) {
-        if (auto* mainFrameDocument = m_frame->mainFrame().document())
+        auto localMainFrame = dynamicDowncast<LocalFrame>(m_frame->abstractMainFrame());
+        ASSERT(localMainFrame);
+        if (auto* mainFrameDocument = localMainFrame->document())
             cache = mainFrameDocument->existingAXObjectCache();
     }
     return cache;

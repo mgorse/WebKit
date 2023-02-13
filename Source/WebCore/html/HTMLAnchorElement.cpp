@@ -410,7 +410,7 @@ std::optional<RegistrableDomain> HTMLAnchorElement::mainDocumentRegistrableDomai
 {
     if (auto frame = document().frame()) {
 
-        auto *localFrame = dynamicDowncast<LocalFrame>(frame->abstractMainFrame());
+        auto* localFrame = dynamicDowncast<LocalFrame>(frame->abstractMainFrame());
         if (!localFrame)
             return std::nullopt;
 
@@ -530,7 +530,7 @@ std::optional<PrivateClickMeasurement> HTMLAnchorElement::parsePrivateClickMeasu
     }
 
     RegistrableDomain mainDocumentRegistrableDomain;
-    auto *localFrame = dynamicDowncast<LocalFrame>(frame->abstractMainFrame());
+    auto* localFrame = dynamicDowncast<LocalFrame>(frame->abstractMainFrame());
     ASSERT(localFrame);
     if (auto mainDocument = localFrame->document())
         mainDocumentRegistrableDomain = RegistrableDomain { mainDocument->url() };
